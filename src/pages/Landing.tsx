@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Flame,
@@ -19,6 +20,8 @@ import {
   Trophy,
   Zap,
 } from "lucide-react";
+
+const DumbbellScene = lazy(() => import("@/components/three/DumbbellScene"));
 
 export default function Landing() {
   return (
@@ -42,27 +45,37 @@ export default function Landing() {
       </header>
 
       {/* HERO */}
-      <section className="container py-20 md:py-28 text-center animate-fade-in">
-        <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-xs text-muted-foreground">
-          <Sparkles className="h-3 w-3 text-primary" /> Notion-style fitness tracker with an AI coach
+      <section className="container relative py-16 md:py-24 animate-fade-in">
+        <div className="grid gap-10 md:grid-cols-2 items-center">
+          <div className="text-center md:text-left">
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-xs text-muted-foreground">
+              <Sparkles className="h-3 w-3 text-primary" /> Notion-style fitness tracker with an AI coach
+            </div>
+            <h1 className="mt-6 font-display text-5xl md:text-7xl font-bold tracking-tight">
+              Track every rep. <br />
+              <span className="text-gradient">Recover smarter.</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-muted-foreground md:mx-0 mx-auto">
+              Log workouts, habits, and body stats in one flexible workspace. Get AI-powered insights based on your real data.
+            </p>
+            <div className="mt-10 flex md:justify-start justify-center gap-3">
+              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 glow">
+                <Link to="/auth?mode=signup">Start tracking free</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline"><Link to="/auth">I have an account</Link></Button>
+            </div>
+            <p className="mt-4 text-xs text-muted-foreground">100% free • No credit card • Your data stays yours</p>
+          </div>
+          <div className="relative h-[360px] md:h-[480px] order-first md:order-last">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.18),transparent_60%)]" />
+            <Suspense fallback={<div className="h-full w-full animate-pulse rounded-2xl bg-secondary/20" />}>
+              <DumbbellScene />
+            </Suspense>
+          </div>
         </div>
-        <h1 className="mt-6 font-display text-5xl md:text-7xl font-bold tracking-tight">
-          Track every rep. <br />
-          <span className="text-gradient">Recover smarter.</span>
-        </h1>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground">
-          Log workouts, habits, and body stats in one flexible workspace. Get AI-powered insights based on your real data.
-        </p>
-        <div className="mt-10 flex justify-center gap-3">
-          <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 glow">
-            <Link to="/auth?mode=signup">Start tracking free</Link>
-          </Button>
-          <Button asChild size="lg" variant="outline"><Link to="/auth">I have an account</Link></Button>
-        </div>
-        <p className="mt-4 text-xs text-muted-foreground">100% free • No credit card • Your data stays yours</p>
 
         {/* Trust strip */}
-        <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto text-center">
           {[
             { k: "12k+", v: "Workouts logged" },
             { k: "98%", v: "Weekly retention" },
