@@ -1,4 +1,4 @@
-const BASE = (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(/\/$/, "");
+const BASE = (import.meta.env.VITE_API_URL || "https://fit-notion-backend-api.onrender.com").replace(/\/$/, "");
 
 function getToken() {
   return localStorage.getItem("fitnotion_token");
