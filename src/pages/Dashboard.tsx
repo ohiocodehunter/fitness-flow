@@ -118,9 +118,9 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button asChild variant="outline" size="sm"><Link to="/recovery"><HeartPulse className="h-4 w-4 mr-1.5" /> Log recovery</Link></Button>
+          <Button asChild variant="outline" size="sm"><Link to="/app/recovery"><HeartPulse className="h-4 w-4 mr-1.5" /> Log recovery</Link></Button>
           <Button asChild size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <Link to="/workouts"><Plus className="h-4 w-4 mr-1.5" /> New workout</Link>
+            <Link to="/app/workouts"><Plus className="h-4 w-4 mr-1.5" /> New workout</Link>
           </Button>
         </div>
       </header>
@@ -154,7 +154,7 @@ export default function Dashboard() {
             <div className="mt-8 text-center py-10">
               <Dumbbell className="h-10 w-10 text-muted-foreground/50 mx-auto" />
               <p className="mt-3 text-sm text-muted-foreground">No workouts yet. Log your first workout to see trends.</p>
-              <Button asChild size="sm" className="mt-4"><Link to="/workouts">Log a workout</Link></Button>
+              <Button asChild size="sm" className="mt-4"><Link to="/app/workouts">Log a workout</Link></Button>
             </div>
           ) : (
             <Suspense fallback={<div className="h-64 animate-pulse rounded-lg bg-secondary/40 mt-4" />}>
@@ -186,7 +186,7 @@ export default function Dashboard() {
         <div className="surface rounded-xl border border-border p-6 lg:col-span-2">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-xl font-semibold">Recent workouts</h2>
-            <Button asChild variant="ghost" size="sm"><Link to="/workouts">View all <ArrowRight className="h-3 w-3 ml-1" /></Link></Button>
+            <Button asChild variant="ghost" size="sm"><Link to="/app/workouts">View all <ArrowRight className="h-3 w-3 ml-1" /></Link></Button>
           </div>
           {loading ? (
             <div className="mt-4 space-y-2">
@@ -226,7 +226,7 @@ export default function Dashboard() {
               <div className="font-display text-2xl font-semibold">{avgSleep}<span className="text-sm text-muted-foreground">/10</span></div>
             </div>
           </div>
-          <Button asChild variant="outline" size="sm" className="mt-5 w-full"><Link to="/recovery">Log today's recovery</Link></Button>
+          <Button asChild variant="outline" size="sm" className="mt-5 w-full"><Link to="/app/recovery">Log today's recovery</Link></Button>
         </div>
       </div>
 
@@ -249,7 +249,7 @@ export default function Dashboard() {
             <h3 className="mt-1 font-display text-2xl font-semibold">Need a plan for tomorrow?</h3>
             <p className="text-sm text-muted-foreground mt-1">Ask the coach — it knows your last 14 days.</p>
           </div>
-          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 glow"><Link to="/coach">Open AI coach <ArrowRight className="h-4 w-4 ml-1.5" /></Link></Button>
+          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 glow"><Link to="/app/coach">Open AI coach <ArrowRight className="h-4 w-4 ml-1.5" /></Link></Button>
         </div>
       </div>
     </div>

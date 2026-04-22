@@ -22,9 +22,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const me = await api<User>("/api/me");
       setUser(me);
-    } catch {
-      setUser(null);
-      setToken(null);
+    } catch (e: any) {
+      // Only clear the session on auth failures. Network/CORS/5xx errors
+      // should NOT log the user out — keep the token and let them retry.
+      if (e?.status === 401 || e?.status === 403) {
+        setUser(null);
+        setToken(null);
+      }
     }
   };
 
