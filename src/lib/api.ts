@@ -68,7 +68,9 @@ export async function api<T = any>(
   }
 
   if (!response.ok) {
-    throw new Error(data?.error || `Request failed (${response.status})`);
+    const err = new Error(data?.error || `Request failed (${response.status})`) as Error & { status?: number };
+    err.status = response.status;
+    throw err;
   }
 
   return data as T;
