@@ -1,6 +1,6 @@
 const BASE_URL =
   import.meta.env.VITE_API_URL ||
-  "https://fit-notion-backend-api.onrender.com/api";
+  "https://fit-notion-backend-api.onrender.com";
 
 // Ensure no trailing slash
 const BASE = BASE_URL.replace(/\/$/, "");
