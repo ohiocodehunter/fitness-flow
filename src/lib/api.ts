@@ -29,4 +29,6 @@ export async function api<T = any>(
   return data as T;
 }
 
+console.log("API URL:", `${BASE}${path}`);
+
 export const API_BASE = BASE;
