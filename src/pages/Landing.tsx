@@ -33,7 +33,6 @@ export default function Landing() {
         <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
           <a href="#features" className="hover:text-foreground transition-colors">Features</a>
           <a href="#how" className="hover:text-foreground transition-colors">How it works</a>
-          <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
           <a href="#faq" className="hover:text-foreground transition-colors">FAQ</a>
         </nav>
         <div className="flex gap-2">
@@ -60,7 +59,7 @@ export default function Landing() {
           </Button>
           <Button asChild size="lg" variant="outline"><Link to="/auth">I have an account</Link></Button>
         </div>
-        <p className="mt-4 text-xs text-muted-foreground">No credit card • Free forever plan • Your data stays yours</p>
+        <p className="mt-4 text-xs text-muted-foreground">100% free • No credit card • Your data stays yours</p>
 
         {/* Trust strip */}
         <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto">
@@ -183,39 +182,29 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* PRICING */}
-      <section id="pricing" className="container pb-24">
-        <div className="text-center max-w-2xl mx-auto">
-          <h2 className="font-display text-3xl md:text-4xl font-bold">Simple pricing</h2>
-          <p className="mt-3 text-muted-foreground">Start free. Upgrade when you want deeper AI coaching.</p>
-        </div>
-        <div className="mt-12 grid gap-4 md:grid-cols-2 max-w-3xl mx-auto">
-          {[
-            { name: "Free", price: "$0", note: "Forever", perks: ["Unlimited workout logs", "Habit & body stat tracking", "Basic charts", "Tags & search"] },
-            { name: "Pro", price: "$6", note: "/month", perks: ["Everything in Free", "Unlimited AI coach chats", "Advanced analytics", "CSV / JSON export"], highlight: true },
-          ].map((p) => (
-            <div
-              key={p.name}
-              className={`surface rounded-2xl border p-6 ${p.highlight ? "border-primary/50 shadow-[var(--shadow-glow)]" : "border-border"}`}
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="font-display text-xl font-semibold">{p.name}</h3>
-                {p.highlight && <span className="text-xs px-2 py-0.5 rounded-full bg-primary/10 text-primary">Popular</span>}
+      {/* WHY FREE */}
+      <section className="container pb-24">
+        <div className="surface rounded-3xl border border-border p-8 md:p-12 text-center max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs text-primary">
+            <Sparkles className="h-3 w-3" /> 100% Free
+          </div>
+          <h2 className="mt-4 font-display text-3xl md:text-4xl font-bold">Everything included. Forever.</h2>
+          <p className="mt-3 text-muted-foreground">No paywalls, no premium tiers, no hidden upsells. Every feature is unlocked from day one.</p>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 text-left text-sm">
+            {[
+              "Unlimited workout logs",
+              "Unlimited AI coach chats",
+              "Habit & body stat tracking",
+              "Advanced analytics & charts",
+              "Tags, search & filters",
+              "JSON / CSV export anytime",
+            ].map((perk) => (
+              <div key={perk} className="flex gap-2 items-start">
+                <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <span className="text-muted-foreground">{perk}</span>
               </div>
-              <div className="mt-4 flex items-end gap-1">
-                <span className="font-display text-4xl font-bold">{p.price}</span>
-                <span className="text-sm text-muted-foreground mb-1">{p.note}</span>
-              </div>
-              <ul className="mt-6 space-y-2 text-sm">
-                {p.perks.map((perk) => (
-                  <li key={perk} className="flex gap-2 text-muted-foreground"><CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" /> {perk}</li>
-                ))}
-              </ul>
-              <Button asChild className={`mt-6 w-full ${p.highlight ? "bg-primary text-primary-foreground hover:bg-primary/90" : ""}`} variant={p.highlight ? "default" : "outline"}>
-                <Link to="/auth?mode=signup">Get started</Link>
-              </Button>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
@@ -268,7 +257,7 @@ export default function Landing() {
         </div>
         <div className="flex items-center gap-5">
           <a href="#features" className="hover:text-foreground transition-colors">Features</a>
-          <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
+          <a href="#how" className="hover:text-foreground transition-colors">How it works</a>
           <a href="#faq" className="hover:text-foreground transition-colors">FAQ</a>
           <Link to="/auth" className="hover:text-foreground transition-colors">Sign in</Link>
         </div>
