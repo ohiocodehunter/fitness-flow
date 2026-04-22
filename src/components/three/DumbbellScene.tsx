@@ -1,6 +1,5 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment } from "@react-three/drei";
-import { useRef, useEffect, useState } from "react";
+import { forwardRef, useRef, useEffect, useState } from "react";
 import type { Group } from "three";
 
 function Dumbbell({ scrollY }: { scrollY: { current: number } }) {
@@ -42,7 +41,7 @@ function Dumbbell({ scrollY }: { scrollY: { current: number } }) {
   );
 }
 
-export default function DumbbellScene() {
+const DumbbellScene = forwardRef<HTMLDivElement>((_props, ref) => {
   const scrollY = useRef(0);
   const [enabled, setEnabled] = useState(true);
 
@@ -64,21 +63,26 @@ export default function DumbbellScene() {
     };
   }, []);
 
-  if (!enabled) return null;
+  if (!enabled) return <div ref={ref} />;
 
   return (
-    <Canvas
-      dpr={[1, 1.5]}
-      gl={{ antialias: true, powerPreference: "high-performance", alpha: true }}
-      camera={{ position: [0, 0, 6], fov: 35 }}
-      frameloop="always"
-      style={{ width: "100%", height: "100%" }}
-    >
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[5, 5, 5]} intensity={1.2} color="#cfff5b" />
-      <directionalLight position={[-5, -3, -2]} intensity={0.4} color="#ff6b3d" />
-      <Dumbbell scrollY={scrollY} />
-      <Environment preset="city" />
-    </Canvas>
+    <div ref={ref} className="h-full w-full">
+      <Canvas
+        dpr={[1, 1.5]}
+        gl={{ antialias: true, powerPreference: "high-performance", alpha: true }}
+        camera={{ position: [0, 0, 6], fov: 35 }}
+        frameloop="always"
+        style={{ width: "100%", height: "100%" }}
+      >
+        <ambientLight intensity={0.55} />
+        <directionalLight position={[5, 5, 5]} intensity={1.3} color="#cfff5b" />
+        <directionalLight position={[-5, -3, -2]} intensity={0.5} color="#ff6b3d" />
+        <pointLight position={[0, 0, 4]} intensity={0.6} color="#ffffff" />
+        <Dumbbell scrollY={scrollY} />
+      </Canvas>
+    </div>
   );
-}
+});
+DumbbellScene.displayName = "DumbbellScene";
+
+export default DumbbellScene;
