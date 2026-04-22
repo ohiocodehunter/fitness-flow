@@ -1,17 +1,18 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Environment } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import { useRef, useEffect, useState } from "react";
-import type { Mesh, Group } from "three";
+import type { Group } from "three";
 
 function Dumbbell({ scrollY }: { scrollY: { current: number } }) {
   const group = useRef<Group>(null);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     if (!group.current) return;
-    // Scroll-driven rotation + gentle idle spin
     const target = scrollY.current * 0.004;
     group.current.rotation.x += (target - group.current.rotation.x) * Math.min(1, delta * 4);
     group.current.rotation.y += delta * 0.4;
+    // gentle float
+    group.current.position.y = Math.sin(state.clock.elapsedTime * 1.2) * 0.15;
   });
 
   return (
@@ -34,14 +35,6 @@ function Dumbbell({ scrollY }: { scrollY: { current: number } }) {
           <mesh castShadow>
             <cylinderGeometry args={[0.95, 0.95, 0.45, 48]} />
             <meshStandardMaterial color="hsl(80, 92%, 56%)" metalness={0.55} roughness={0.25} emissive="hsl(80, 92%, 35%)" emissiveIntensity={0.2} />
-          </mesh>
-          <mesh position={[0, 0, 0]}>
-            <torusGeometry args={[0.95, 0.04, 16, 64]} />
-            <meshStandardMaterial color="#1a1a1a" metalness={0.6} roughness={0.4} />
-          </mesh>
-          <mesh position={[0, y > 0 ? 0.23 : -0.23, 0]}>
-            <cylinderGeometry args={[0.55, 0.55, 0.03, 32]} />
-            <meshStandardMaterial color="#0f0f10" metalness={0.4} roughness={0.6} />
           </mesh>
         </group>
       ))}
@@ -84,9 +77,7 @@ export default function DumbbellScene() {
       <ambientLight intensity={0.4} />
       <directionalLight position={[5, 5, 5]} intensity={1.2} color="#cfff5b" />
       <directionalLight position={[-5, -3, -2]} intensity={0.4} color="#ff6b3d" />
-      <Float speed={1.4} rotationIntensity={0.3} floatIntensity={0.6}>
-        <Dumbbell scrollY={scrollY} />
-      </Float>
+      <Dumbbell scrollY={scrollY} />
       <Environment preset="city" />
     </Canvas>
   );
