@@ -13,21 +13,12 @@ import meRoutes from "./routes/me.js";
 
 const app = express();
 
-const allowedOrigins = (process.env.CLIENT_ORIGIN || "*")
-  .split(",")
-  .map((s) => s.trim());
+// ✅ SIMPLE & CORRECT CORS
+app.use(cors({
+  origin: "https://fit-notion.netlify.app",
+  credentials: true,
+}));
 
-app.use(
-  cors({
-    origin: (origin, cb) => {
-      if (!origin || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
-        return cb(null, true);
-      }
-      cb(new Error("Not allowed by CORS"));
-    },
-    credentials: true,
-  })
-);
 app.use(express.json({ limit: "1mb" }));
 
 app.use(
