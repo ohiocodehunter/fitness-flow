@@ -149,7 +149,7 @@ export default function Landing() {
             </div>
             <p className="mt-4 text-xs text-muted-foreground">100% free • No credit card • Your data stays yours</p>
           </div>
-          <div className="relative h-[260px] sm:h-[360px] md:h-[480px] order-first md:order-last hidden xs:block">
+          <div className="relative h-[260px] sm:h-[360px] md:h-[480px] order-first md:order-last">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.18),transparent_60%)]" />
             <Suspense fallback={<div className="h-full w-full animate-pulse rounded-2xl bg-secondary/20" />}>
               <DumbbellScene />
