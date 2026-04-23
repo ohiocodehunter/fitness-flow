@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Flame,
@@ -19,54 +19,137 @@ import {
   Target,
   Trophy,
   Zap,
+  Menu,
+  X,
 } from "lucide-react";
 
 const DumbbellScene = lazy(() => import("@/components/three/DumbbellScene"));
 
 export default function Landing() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
   return (
-    <div className="min-h-screen">
-      <header className="container flex items-center justify-between py-6">
-        <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Flame className="h-5 w-5" />
+    <div className="min-h-screen overflow-x-hidden">
+      <header
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+          scrolled
+            ? "border-b border-border bg-background/80 backdrop-blur-lg"
+            : "border-b border-transparent bg-background/40 backdrop-blur-sm"
+        }`}
+      >
+        <div className="container flex items-center justify-between py-4">
+          <Link to="/" className="flex items-center gap-2 shrink-0">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <Flame className="h-5 w-5" />
+            </div>
+            <span className="font-display text-lg sm:text-xl font-bold">FitNotion</span>
+          </Link>
+          <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+            <a href="#features" className="hover:text-foreground transition-colors">Features</a>
+            <a href="#how" className="hover:text-foreground transition-colors">How it works</a>
+            <a href="#faq" className="hover:text-foreground transition-colors">FAQ</a>
+          </nav>
+          <div className="hidden md:flex gap-2">
+            <Button asChild variant="ghost"><Link to="/auth">Sign in</Link></Button>
+            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 glow"><Link to="/auth?mode=signup">Get started</Link></Button>
           </div>
-          <span className="font-display text-xl font-bold">FitNotion</span>
+          <button
+            type="button"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((v) => !v)}
+            className="md:hidden inline-flex h-11 w-11 items-center justify-center rounded-lg border border-border bg-secondary/60 text-foreground hover:bg-secondary transition-colors"
+          >
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
-        <nav className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-          <a href="#features" className="hover:text-foreground transition-colors">Features</a>
-          <a href="#how" className="hover:text-foreground transition-colors">How it works</a>
-          <a href="#faq" className="hover:text-foreground transition-colors">FAQ</a>
-        </nav>
-        <div className="flex gap-2">
-          <Button asChild variant="ghost"><Link to="/auth">Sign in</Link></Button>
-          <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 glow"><Link to="/auth?mode=signup">Get started</Link></Button>
+
+        {/* Mobile menu */}
+        <div
+          className={`md:hidden fixed inset-0 top-[64px] z-40 transition-opacity duration-200 ${
+            menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
+          onClick={() => setMenuOpen(false)}
+        >
+          <div className="absolute inset-0 bg-background/70 backdrop-blur-sm" />
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className={`relative mx-4 mt-2 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-elegant)] transition-all duration-200 ${
+              menuOpen ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
+            }`}
+          >
+            <nav className="flex flex-col">
+              {[
+                { href: "#features", label: "Features" },
+                { href: "#how", label: "How it works" },
+                { href: "#faq", label: "FAQ" },
+              ].map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-lg px-3 py-3 text-base text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+                >
+                  {l.label}
+                </a>
+              ))}
+            </nav>
+            <div className="mt-3 flex flex-col gap-2 border-t border-border pt-3">
+              <Button asChild variant="outline" className="w-full h-11" onClick={() => setMenuOpen(false)}>
+                <Link to="/auth">Sign in</Link>
+              </Button>
+              <Button asChild className="w-full h-11 bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => setMenuOpen(false)}>
+                <Link to="/auth?mode=signup">Get started</Link>
+              </Button>
+            </div>
+          </div>
         </div>
       </header>
 
       {/* HERO */}
-      <section className="container relative py-16 md:py-24 animate-fade-in">
+      <section className="container relative py-12 sm:py-16 md:py-24 animate-fade-in">
         <div className="grid gap-10 md:grid-cols-2 items-center">
           <div className="text-center md:text-left">
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-xs text-muted-foreground">
               <Sparkles className="h-3 w-3 text-primary" /> Notion-style fitness tracker with an AI coach
             </div>
-            <h1 className="mt-6 font-display text-5xl md:text-7xl font-bold tracking-tight">
+            <h1 className="mt-6 font-display font-bold tracking-tight text-[clamp(2.25rem,7vw,4.5rem)] leading-[1.05]">
               Track every rep. <br />
               <span className="text-gradient">Recover smarter.</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-muted-foreground md:mx-0 mx-auto">
+            <p className="mt-6 max-w-xl text-base sm:text-lg text-muted-foreground md:mx-0 mx-auto">
               Log workouts, habits, and body stats in one flexible workspace. Get AI-powered insights based on your real data.
             </p>
-            <div className="mt-10 flex md:justify-start justify-center gap-3">
-              <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 glow">
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row md:justify-start justify-center gap-3">
+              <Button asChild size="lg" className="w-full sm:w-auto h-12 bg-primary text-primary-foreground hover:bg-primary/90 glow">
                 <Link to="/auth?mode=signup">Start tracking free</Link>
               </Button>
-              <Button asChild size="lg" variant="outline"><Link to="/auth">I have an account</Link></Button>
+              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-12"><Link to="/auth">I have an account</Link></Button>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">100% free • No credit card • Your data stays yours</p>
           </div>
-          <div className="relative h-[360px] md:h-[480px] order-first md:order-last">
+          <div className="relative h-[260px] sm:h-[360px] md:h-[480px] order-first md:order-last hidden xs:block">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.18),transparent_60%)]" />
             <Suspense fallback={<div className="h-full w-full animate-pulse rounded-2xl bg-secondary/20" />}>
               <DumbbellScene />
